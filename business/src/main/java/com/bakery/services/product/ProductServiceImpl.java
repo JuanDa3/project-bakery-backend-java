@@ -19,9 +19,10 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public String registerProduct(Product product) throws ExceptionRegister {
+    public Product registerProduct(Product product) throws ExceptionRegister {
+        validateNull(product);
         productRepository.save(product);
-        return "Product saved correctly";
+        return product;
     }
 
     @Override
@@ -33,5 +34,11 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public List<Product> listProducts() throws ExceptionList {
         return productRepository.findAll();
+    }
+
+    private void validateNull(Product product){
+        if (product == null){
+            throw new ExceptionRegister("Product can't be null");
+        }
     }
 }

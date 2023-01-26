@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ProductService {
 
-    String registerProduct(Product product) throws ExceptionRegister;
+    Product registerProduct(Product product) throws ExceptionRegister;
 
     String deleteProduct(Product product) throws ExceptionDelete;
 
