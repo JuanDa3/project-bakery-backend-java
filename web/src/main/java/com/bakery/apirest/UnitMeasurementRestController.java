@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -71,6 +72,14 @@ public class UnitMeasurementRestController {
         }
 
         response.put("message", "unit measurement deleted correctly");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<?>listUnitMeasurement(){
+        Map<String, Object> response = new HashMap<>();
+        List<UnitMeasurement> unitMeasurementList = unitMeasurementService.listUnitMeasurement();
+        response.put("unitMeasurement",unitMeasurementList);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

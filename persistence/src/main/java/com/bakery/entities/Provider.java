@@ -1,5 +1,6 @@
 package com.bakery.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,13 +30,16 @@ public class Provider implements Serializable {
 
     @OneToMany(mappedBy = "provider")
     @ToString.Exclude
+    @JsonIgnore
     private List<PurchaseDetail>purchaseDetailList = new ArrayList<>();
 
     @OneToMany(mappedBy = "provider", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     @ToString.Exclude
+    @JsonIgnore
     private List<Telephone>telephoneList = new ArrayList<>();
 
     @OneToMany(mappedBy = "provider")
     @ToString.Exclude
+    @JsonIgnore
     private List<Product>productList = new ArrayList<>();
 }

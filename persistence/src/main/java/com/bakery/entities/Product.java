@@ -1,10 +1,8 @@
 package com.bakery.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -42,10 +41,12 @@ public class Product implements Serializable {
 
     @OneToMany(mappedBy = "product")
     @ToString.Exclude
+    @JsonIgnore
     private List<SaleDetail>saleDetailList = new ArrayList<>();
 
     @OneToMany(mappedBy = "product")
     @ToString.Exclude
+    @JsonIgnore
     private List<PurchaseDetail>purchaseDetailList = new ArrayList<>();
 
     @ManyToOne

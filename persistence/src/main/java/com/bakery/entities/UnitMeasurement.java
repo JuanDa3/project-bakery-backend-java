@@ -1,5 +1,6 @@
 package com.bakery.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,5 +26,11 @@ public class UnitMeasurement implements Serializable {
     private String name;
 
     @OneToMany(mappedBy = "unitMeasurement")
+    @ToString.Exclude
+    @JsonIgnore
     private List<Product>productList = new ArrayList<>();
+
+    public void setProductList(List<Product> productList) {
+        this.productList = productList;
+    }
 }

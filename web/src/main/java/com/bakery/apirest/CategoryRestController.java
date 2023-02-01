@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -52,7 +53,6 @@ public class CategoryRestController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        response.put("message", "category registered correctly");
         response.put("category",category);
         return new ResponseEntity<>(category, HttpStatus.OK);
     }
@@ -72,4 +72,11 @@ public class CategoryRestController {
         response.put("message", "category deleted correctly");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @GetMapping("/list")
+    public ResponseEntity<?>listCategories(){
+        List<Category>categoryList = categoryService.listCategories();
+        return new ResponseEntity<>(categoryList, HttpStatus.OK);
+    }
+
 }
