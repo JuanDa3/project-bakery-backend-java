@@ -22,7 +22,7 @@ public class Category implements Serializable {
     @Column(nullable = false, length = 20, name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "categoryProduct")
+    @OneToMany(mappedBy = "category")
     @ToString.Exclude
     @JsonIgnore
     private List<Product>productList = new ArrayList<>();

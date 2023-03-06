@@ -3,11 +3,14 @@ package com.bakery.apirest;
 import com.bakery.entities.Product;
 import com.bakery.exceptions.ExceptionRegister;
 import com.bakery.exceptions.ExceptionUpdate;
-import com.bakery.factory.DtoProduct;
 import com.bakery.services.product.ProductService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,19 +31,15 @@ public class ProductRestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?>createProduct(@RequestBody Product product){
-        System.out.println(product);
-        Product newProduct;
         Map<String, Object> response = new HashMap<>();
         try {
-            newProduct = productService.registerProduct(product);
+            productService.registerProduct(product);
         } catch (ExceptionRegister e) {
-            response.put("message","Error registering product");
-            response.put("error", e);
+            response.put("message",e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
 
         response.put("message", "product registered correctly");
-        response.put("product",newProduct);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -76,18 +75,23 @@ public class ProductRestController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/list")
+    @GetMapping("/list-all")
     public ResponseEntity<?>listProducts(){
-        List<DtoProduct> productList = productService.listProducts();
+        List<Product> productList = productService.listAllProducts();
         return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
+    @GetMapping("/page/{page}")
+    public Page<Product>index(@PathVariable Integer page){
+        Pageable pageable = PageRequest.of(page, 10);
+        return productService.listProductPageable(pageable);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?>updateProduct(@RequestBody Product product, @PathVariable Integer id){
         Map<String, Object> response = new HashMap<>();
-        Product productUpdated;
         try {
-            productUpdated = productService.updateProduct(id, product);
+            productService.updateProduct(id, product);
         } catch (ExceptionUpdate e) {
             response.put("message","Error in product");
             response.put("error", e.getMessage());
@@ -95,7 +99,6 @@ public class ProductRestController {
         }
 
         response.put("message","product updated correctly");
-        response.put("product",productUpdated);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

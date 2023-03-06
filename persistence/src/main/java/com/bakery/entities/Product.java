@@ -33,7 +33,7 @@ public class Product implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "category", nullable = false)
-    private Category categoryProduct;
+    private Category category;
 
     @ManyToOne
     @JoinColumn(name="unitMeasurement", nullable = false)

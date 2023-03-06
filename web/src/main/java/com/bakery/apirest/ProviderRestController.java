@@ -77,11 +77,8 @@ public class ProviderRestController {
 
     @GetMapping("/list")
     public ResponseEntity<?>listProviders(){
-        Map<String, Object> response = new HashMap<>();
-
         List<Provider> providersList = providerService.listProviders();
-        response.put("providers",providersList);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(providersList, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

@@ -77,9 +77,7 @@ public class UnitMeasurementRestController {
 
     @GetMapping("/list")
     public ResponseEntity<?>listUnitMeasurement(){
-        Map<String, Object> response = new HashMap<>();
         List<UnitMeasurement> unitMeasurementList = unitMeasurementService.listUnitMeasurement();
-        response.put("unitMeasurement",unitMeasurementList);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(unitMeasurementList, HttpStatus.OK);
     }
 }
