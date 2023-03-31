@@ -2,7 +2,11 @@ package com.bakery.apirest;
 
 import com.bakery.entities.UnitMeasurement;
 import com.bakery.exceptions.ExceptionFind;
+import com.bakery.exceptions.ExceptionList;
 import com.bakery.services.unitmeasurement.UnitMeasurementService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,12 +36,10 @@ public class UnitMeasurementRestController {
             newUnitMeasurement = unitMeasurementService.registerUnitMeasurement(unitMeasurement);
         } catch (RuntimeException e) {
             response.put("message","Error registering unit measurement");
-            response.put("error", e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
 
-        response.put("message", "category registered correctly");
-        response.put("category",newUnitMeasurement.getName());
+        response.put("message", "unit measurement registered correctly");
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -49,14 +51,13 @@ public class UnitMeasurementRestController {
         try {
             unitMeasurement = unitMeasurementService.findUnitMeasurementById(id);
         } catch (ExceptionFind e) {
-            response.put("message","Error in category");
+            response.put("message","Error in unit measurement");
             response.put("error", e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        response.put("message", "category registered correctly");
-        response.put("category",unitMeasurement);
-        return new ResponseEntity<>(unitMeasurement, HttpStatus.OK);
+        response.put("unit measurement", unitMeasurement);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -75,9 +76,15 @@ public class UnitMeasurementRestController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/list")
+    @GetMapping("/list-all")
     public ResponseEntity<?>listUnitMeasurement(){
         List<UnitMeasurement> unitMeasurementList = unitMeasurementService.listUnitMeasurement();
         return new ResponseEntity<>(unitMeasurementList, HttpStatus.OK);
+    }
+
+    @GetMapping("/page/{page}")
+    public Page<UnitMeasurement>unitMeasurementPage(@PathVariable Integer page)throws ExceptionList{
+        Pageable pageable = PageRequest.of(page, 10);
+        return unitMeasurementService.listUnitMeasurementPageable(pageable);
     }
 }

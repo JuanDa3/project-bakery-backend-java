@@ -7,6 +7,8 @@ import com.bakery.exceptions.ExceptionFind;
 import com.bakery.exceptions.ExceptionList;
 import com.bakery.exceptions.ExceptionRegister;
 import com.bakery.repositories.UnitMeasurementRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,6 +47,11 @@ public class UnitMeasurementServiceImpl implements UnitMeasurementService{
             throw new ExceptionFind("Unit Measurement not exist");
         }
         return unitMeasurementRepository.findById(id);
+    }
+
+    @Override
+    public Page<UnitMeasurement> listUnitMeasurementPageable(Pageable pageable) throws ExceptionFind {
+        return unitMeasurementRepository.listAllPage(pageable);
     }
 
     private void validateNull(UnitMeasurement unitMeasurement){

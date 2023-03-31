@@ -82,7 +82,7 @@ public class ProductRestController {
     }
 
     @GetMapping("/page/{page}")
-    public Page<Product>index(@PathVariable Integer page){
+    public Page<Product>productPageable(@PathVariable Integer page){
         Pageable pageable = PageRequest.of(page, 10);
         return productService.listProductPageable(pageable);
     }

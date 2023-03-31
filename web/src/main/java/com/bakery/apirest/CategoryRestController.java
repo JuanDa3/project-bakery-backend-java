@@ -1,7 +1,11 @@
 package com.bakery.apirest;
 
 import com.bakery.entities.Category;
+import com.bakery.exceptions.ExceptionList;
 import com.bakery.services.category.CategoryService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +40,6 @@ public class CategoryRestController {
         }
 
         response.put("message", "category registered correctly");
-        response.put("category",newCategory.getName());
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -54,7 +57,7 @@ public class CategoryRestController {
         }
 
         response.put("category",category);
-        return new ResponseEntity<>(category, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -73,10 +76,16 @@ public class CategoryRestController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/list")
+    @GetMapping("/list-all")
     public ResponseEntity<?>listCategories(){
         List<Category>categoryList = categoryService.listCategories();
         return new ResponseEntity<>(categoryList, HttpStatus.OK);
+    }
+
+    @GetMapping("/page/{page}")
+    public Page<Category> categoryPageable(@PathVariable Integer page)throws ExceptionList {
+        Pageable pageable = PageRequest.of(page, 10);
+        return categoryService.listCategoryPageable(pageable);
     }
 
 }

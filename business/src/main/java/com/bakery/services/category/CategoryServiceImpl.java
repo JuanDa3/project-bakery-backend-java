@@ -6,6 +6,8 @@ import com.bakery.exceptions.ExceptionFind;
 import com.bakery.exceptions.ExceptionList;
 import com.bakery.exceptions.ExceptionRegister;
 import com.bakery.repositories.CategoryRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,6 +46,11 @@ public class CategoryServiceImpl implements CategoryService{
             throw new ExceptionFind("Category not exist");
         }
         return categoryRepository.findById(id);
+    }
+
+    @Override
+    public Page<Category> listCategoryPageable(Pageable pageable) throws ExceptionFind {
+        return categoryRepository.listAllPage(pageable);
     }
 
     private void validateNull(Category category){
